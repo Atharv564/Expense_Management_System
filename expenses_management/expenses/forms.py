@@ -10,3 +10,5 @@ class TransactionForm(forms.ModelForm):
             'transaction_type': forms.Select(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Enter description'}),
         }
+
+
