@@ -128,3 +128,12 @@ STATIC_URL = '/static/'
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'dashboard'
 LOGOUT_REDIRECT_URL = 'home'
+
+import os
+
+# Static Files (CSS, JS, Images, Favicon)
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+# For Deployment: Collect Static Files
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
