@@ -79,6 +79,7 @@ source env/bin/activate  # On Windows: env\Scripts\activate
 ### 3️⃣ **Install Dependencies**
 ```sh
 pip install django
+pip install openpyxl  
 ```
 ### 4️⃣ **Run Migrations**
 ```sh
