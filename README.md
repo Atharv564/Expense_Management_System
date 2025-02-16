@@ -2,7 +2,7 @@
 A simple and interactive **Expense Tracker** built with Django, Bootstrap, and SQLite.  
 This system helps users **manage their credits, debits, and total balance in ₹ Rupees**.
 
-![Expense Management Screenshot](static/images/screenshot.PNG)  
+![Expense Management Screenshot](expenses_management/static/images/screenshot.PNG)  
 
 ---
 
@@ -37,17 +37,17 @@ The **Pie Chart** dynamically updates when transactions are added.
 🟢 **Green → Credits (₹)**  
 🔴 **Red → Debits (₹)**  
 
-![Pie Chart Screenshot](static/images/piechart.PNG)  
+![Pie Chart Screenshot](expenses_management/static/images/piechart.PNG)  
 
 ---
 
 ## 📸 Screenshots  
 
 ### **Dashboard (Balance & Transactions in ₹ Rupees)**  
-![Dashboard](static/images/dashboard.png)  
+![Dashboard](expenses_management/static/images/dashboard.PNG)  
 
 ### **Add Transaction (Credits/Debits in ₹)**  
-![Add Transaction](static/images/add_transaction.png)  
+![Add Transaction](expenses_management/static/images/add_transaction.PNG)  
 
 ---
 
