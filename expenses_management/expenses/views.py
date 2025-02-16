@@ -8,6 +8,10 @@ from django.http import JsonResponse
 from datetime import datetime
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
+import openpyxl
+from openpyxl.styles import Border, Side, NamedStyle
+from django.http import HttpResponse
+from django.utils.timezone import localtime
 
 # Home Page
 def home(request):
@@ -171,3 +175,58 @@ def profile(request):
         return redirect("dashboard")
 
     return render(request, "profile.html")
+
+# Excel Download
+# Define a date style for the Excel file
+date_style = NamedStyle(name='date_style', number_format='YYYY-MM-DD HH:MM:SS')
+
+# Define border style
+border_style = Border(
+    left=Side(border_style="thin"),
+    right=Side(border_style="thin"),
+    top=Side(border_style="thin"),
+    bottom=Side(border_style="thin")
+)
+
+@login_required
+def export_transactions(request):
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = 'Transactions'
+
+    headers = ['ID', 'Date', 'Description', 'Amount', 'Tran_Type']
+    ws.append(headers)
+
+    transactions = Transaction.objects.all()
+
+    # Add transaction data to the sheet
+    for transaction in transactions:
+        transaction_date = localtime(transaction.date).replace(tzinfo=None)
+        row = [
+            transaction.id,
+            transaction_date,
+            transaction.description,
+            transaction.amount,
+            transaction.transaction_type,
+        ]
+        ws.append(row)
+
+    # Apply the date style to the date column (column 'B')
+    for row in ws.iter_rows(min_row=2, min_col=2, max_col=2):  # Start from row 2 (skip header)
+        for cell in row:
+            cell.style = date_style
+
+    # Apply borders to all cells
+    for row in ws.iter_rows(min_row=1, min_col=1, max_row=ws.max_row, max_col=ws.max_column):
+        for cell in row:
+            cell.border = border_style
+
+    # Adjust the column width for date column and others
+    ws.column_dimensions['B'].width = 20  # Adjust width of the Date column
+
+    # Set the response content type and return the Excel file
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename=transactions.xlsx'
+
+    wb.save(response)
+    return response

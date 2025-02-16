@@ -12,4 +12,6 @@ urlpatterns = [
     path('transaction/delete/<int:transaction_id>/', views.delete_transaction, name='delete_transaction'),
     path('chart-data/', views.transaction_chart_data, name='transaction_chart_data'),
     path("profile/", profile, name="profile"),
+    path('export_transactions/', export_transactions, name='export_transactions'),
+
 ]
