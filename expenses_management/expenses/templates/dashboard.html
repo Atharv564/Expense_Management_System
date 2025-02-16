@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h2 class="mb-3">Dashboard</h2>
+        <div class="alert alert-info"><strong> Balance:</strong> ₹{{ balance }}</div>
+        
+        
+        <h4 class="mt-4">Add Transaction</h4>
+        <form method="POST" class="shadow p-4 bg-light rounded">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-success"><i class="fa-solid fa-plus"></i> Add</button>
+        </form>
+
+        <h4 class="mt-4">Transaction History</h4>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Amount</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaction in transactions %}
+                <tr>
+                    <td>₹{{ transaction.amount }}</td>
+                    <td>
+                        {% if transaction.transaction_type == 'credit' %}
+                            <span class="text-success"><i class="fa-solid fa-arrow-up"></i> Credit</span>
+                        {% else %}
+                            <span class="text-danger"><i class="fa-solid fa-arrow-down"></i> Debit</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ transaction.description }}</td>
+                    <td>{{ transaction.date }}</td>
+                    <td>
+                        <a href="{% url 'edit_transaction' transaction.id %}" class="btn btn-warning btn-sm">
+                            <i class="fa-solid fa-pen"></i> Edit
+                        </a>
+                        <a href="{% url 'delete_transaction' transaction.id %}" class="btn btn-danger btn-sm">
+                            <i class="fa-solid fa-trash"></i> Delete
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">No transactions yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!--Expenses Pie Chart-->
+        <div class="container mt-4">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card shadow-sm border-0 rounded">
+                        <div class="card-header bg-primary text-white fw-bold text-center">
+                            <i class="fa-solid fa-chart-pie me-2"></i> Monthly Expense Analysis
+                        </div>
+                        <div class="card-body">
+                            <!-- Month Selector -->
+                            <div class="d-flex justify-content-center align-items-center gap-3 mb-3">
+                                <label for="monthSelector" class="fw-bold text-dark">Select Month:</label>
+                                <input type="month" id="monthSelector" class="form-control w-auto" value="{{ today|date:'Y-m' }}">
+                            </div>
+        
+                            <!-- Pie Chart -->
+                            <div class="d-flex justify-content-center">
+                                <div class="bg-white p-3 rounded shadow-sm" style="max-width: 350px; max-height: 350px;">
+                                    <canvas id="monthlyPieChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Chart.js -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const monthSelector = document.getElementById("monthSelector");
+                const ctx = document.getElementById("monthlyPieChart").getContext("2d");
+                let pieChart;
+        
+                function fetchChartData(month) {
+                    fetch(`/chart-data/?month=${month}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (pieChart) {
+                            pieChart.destroy(); // Destroy previous chart before updating
+                        }
+        
+                        pieChart = new Chart(ctx, {
+                            type: 'pie',
+                            data: {
+                                labels: data.labels,
+                                datasets: [{
+                                    data: data.values,
+                                    backgroundColor: ['#28a745', '#dc3545'],
+                                    hoverOffset: 6
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                animation: {
+                                    animateRotate: true, // Smooth rotation animation
+                                    animateScale: true  // Bounce effect when loading
+                                },
+                                plugins: {
+                                    legend: {
+                                        position: 'bottom',
+                                        labels: {
+                                            font: {
+                                                size: 14,
+                                                weight: 'bold'
+                                            }
+                                        }
+                                    }
+                                },
+                                hover: {
+                                    mode: 'nearest',
+                                    animationDuration: 400 // Smooth hover effect
+                                }
+                            }
+                        });
+                    });
+                }
+        
+                // Load chart for default selected month
+                fetchChartData(monthSelector.value);
+        
+                // Update chart when month is changed
+                monthSelector.addEventListener("change", function() {
+                    fetchChartData(this.value);
+                });
+            });
+        </script>
+        
+{% endblock %}
