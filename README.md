@@ -36,6 +36,11 @@ This system helps users **manage their credits, debits, and total balance in ₹
 - **FontAwesome Icons** for a better experience  
 - **Mobile Responsive Design** 📱
 
+### 📤 **Excel Export**
+- Export transactions to Excel.
+- Download Excel files with transaction details such as amount, type (credit/debit), description, and date.
+- The Excel file is generated dynamically based on the user's transaction history.
+
 ---
 
 
