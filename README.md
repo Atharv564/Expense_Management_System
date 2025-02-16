@@ -49,6 +49,8 @@ The **Pie Chart** dynamically updates when transactions are added.
 ### **Add Transaction (Credits/Debits in ₹)**  
 ![Add Transaction](expenses_management/static/images/add_transaction.PNG)  
 
+### **Profile (Personal Information/Password Change)**  
+![Add Transaction](expenses_management/static/images/profile.PNG) 
 ---
 
 ## 🔧 Installation  
