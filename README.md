@@ -19,6 +19,13 @@ This system helps users **manage their credits, debits, and total balance in ₹
 - **Add, Edit & Delete Transactions**
 - Categorized Transactions: **Credit (Income) & Debit (Expense)**
 
+### 🧑‍💻 **User Profile & Settings**  
+- View and update **Username, Email, First & Last Name**  
+- Change **Password** with validation  
+- Profile popup accessible directly from the **Dashboard**  
+- Secure password update with confirmation  
+- Dynamic UI for seamless profile updates 
+
 ### 📈 **Expense Analysis with Charts**
 - **Pie Chart for Monthly Expense Breakdown**
 - **Smooth Animations & Dynamic Updates**
