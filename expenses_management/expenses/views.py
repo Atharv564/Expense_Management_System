@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from .models import Transaction
 from .forms import TransactionForm
 from django.http import JsonResponse
+from django.db.models import Sum
 from datetime import datetime
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
@@ -194,10 +195,10 @@ def export_transactions(request):
     ws = wb.active
     ws.title = 'Transactions'
 
-    headers = ['ID', 'Date', 'Description', 'Amount', 'Tran_Type']
+    headers = ['ID', 'Date', 'Description', 'Amount', 'Tran_Type', 'Payment Method']
     ws.append(headers)
 
-    transactions = Transaction.objects.all()
+    transactions = Transaction.objects.filter(user=request.user)
 
     # Add transaction data to the sheet
     for transaction in transactions:
@@ -208,6 +209,7 @@ def export_transactions(request):
             transaction.description,
             transaction.amount,
             transaction.transaction_type,
+            transaction.payment_method,  # Added payment method field
         ]
         ws.append(row)
 
