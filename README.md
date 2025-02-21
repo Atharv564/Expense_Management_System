@@ -68,7 +68,7 @@ The **Pie Chart** dynamically updates when transactions are added.
 ## 🔧 Installation  
 ### 1️⃣ **Clone the Repository**
 ```sh
-git clone https://github.com/your-repo/expense-management.git
+git clone https://github.com/Atharv564/expense-management.git
 cd expense-management
 ```
 ### 2️⃣ **Create & Activate a Virtual Environment**
